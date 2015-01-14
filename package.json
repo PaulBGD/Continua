@@ -2,6 +2,8 @@
     "name": "Continua",
     "version": "0.0.1",
     "dependencies": {
-
+        "express": "4.11.0",
+        "socket.io": "1.2.1",
+        "request": "2.51.0"
     }
 }

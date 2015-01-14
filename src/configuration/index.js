@@ -3,7 +3,10 @@ var path = require("path");
 var utils = require("../utils");
 
 function Configuration(file) {
-    this.file = path.join("config", file);
+    this.file = path.join(__dirname + "/../../config", file);
+    if(!fs.existsSync(__dirname + "/../../config")) {
+        fs.mkdirSync(__dirname + "/../../config");
+    }
     if (fs.existsSync(this.file)) {
         this.loadFromFile(true);
     } else {
@@ -21,17 +24,14 @@ Configuration.prototype.save = function (object) {
 
 Configuration.prototype.saveToFile = function (sync) {
     var object = {};
-    if (this.configuration) {
-        object = this.configuration;
-    }
     try {
         this.save(object);
     } catch (err) {
         console.error(err.stack);
     }
-    utils.writeFile(this.file, JSON.stringify(object), sync, function (err) {
+    utils.writeFile(this.file, JSON.stringify(object, undefined, 3), sync, function (err) {
         if (err) {
-            return console.error(er.stack);
+            return console.error(err.stack);
         }
     });
 };
