@@ -4,7 +4,7 @@ function Utils() {
 
 }
 
-Utils.prototype.writeFile = function (file, content, sync, callback) {
+Utils.prototype.writeFile = function(file, content, sync, callback) {
     if (typeof sync == 'function') {
         callback = sync;
         sync = false;
@@ -13,15 +13,17 @@ Utils.prototype.writeFile = function (file, content, sync, callback) {
         try {
             fs.writeFileSync(file, content);
             callback();
-        } catch (err) {
+        }
+        catch (err) {
             callback(err);
         }
-    } else {
+    }
+    else {
         fs.writeFile(file, content, callback);
     }
 };
 
-Utils.prototype.readFile = function (file, sync, callback) {
+Utils.prototype.readFile = function(file, sync, callback) {
     if (typeof sync == 'function') {
         callback = sync;
         sync = false;
@@ -30,12 +32,13 @@ Utils.prototype.readFile = function (file, sync, callback) {
         var data = fs.readFileSync(file);
         callback(undefined, data);
         return data;
-    } else {
+    }
+    else {
         fs.readFile(file, callback);
     }
 };
 
-Utils.prototype.mergeObject = function (mergingTo, mergingFrom) {
+Utils.prototype.mergeObject = function(mergingTo, mergingFrom) {
     for (var property in mergingFrom) {
         if (mergingFrom.hasOwnProperty(property) && !mergingTo[property]) {
             mergingTo[property] = mergingFrom[property];
@@ -44,5 +47,25 @@ Utils.prototype.mergeObject = function (mergingTo, mergingFrom) {
     return mergingTo;
 };
 
+Utils.prototype.each = function(object, func) {
+    if (Array.isArray(object)) {
+        for (var i = 0; i < object.length; i++) {
+            var value = func(i, object[i]);
+            if (value) {
+                return value;
+            }
+        }
+    }
+    else {
+        for (var property in object) {
+            if (object.hasOwnProperty(property)) {
+                value = func(property, object[property]);
+                if (value) {
+                    return value;
+                }
+            }
+        }
+    }
+};
 
 module.exports = new Utils();

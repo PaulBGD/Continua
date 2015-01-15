@@ -1,44 +1,57 @@
 var request = require("request");
-var express = require('express');
+var utils = require("../utils");
+var path = require('path');
+var express = require('express.io');
+var ejs = require("ejs");
 var app = express();
 
 var config = require("../configuration/server-config");
 
-var pages = [
-    {
-        title: "Home",
-        url: "/",
-        file: "index"
-    }
-];
+// setup Connect
+app.use(express.cookieParser());
+app.use(express.session({
+    secret: config.key
+}));
+
+app.engine('html', ejs.renderFile);
+app.set('views', './panel/pages');
+app.set('view engine', 'html');
+app.use(express.static('./panel/static'));
+
+var pages = [{
+    title: "Home",
+    url: "/",
+    file: "index"
+}];
 
 function Server() {
-    if (config.listen == 443) {
-        this.server = require("https").Server(app);
-    } else {
-        this.server = require("http").Server(app);
-    }
-    this.io = require('socket.io')(this.server);
+    this.io = app.http().io();
 
     // start routing
-    // start with static assets
-    app.use("/css", express.static('./static/styles'));
-    app.use("/js", express.static('./static/js'));
+    utils.each(pages, function(index, object) {
+        try {
+            var route = require('../routes/' + object.file);
+        } catch (err) {
+            console.log("Failed to load route for page '" + object.title + "'");
+            return;
+        }
+        console.log("Registered " + object.title + " for url " + object.url);
+        app.use(object.url, route);
+    });
 }
 
-Server.prototype.start = function () {
+Server.prototype.start = function() {
     if (this.running) {
         return;
     }
-    // todo startup and if successful
-    this.server.listen(config.listen);
+    app.listen(config.listen);
     this.running = true;
     return config.listen;
 };
 
-Server.prototype.stop = function () {
+Server.prototype.stop = function() {
     if (this.running) {
-        // todo stop and if successful
+        app.close();
         this.running = false;
     }
 };
