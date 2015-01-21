@@ -6,6 +6,7 @@ var ejs = require("ejs");
 var app = express();
 
 var config = require("../configuration/server-config");
+var login = require('../login/manager.js');
 
 // setup Connect
 app.use(express.cookieParser());

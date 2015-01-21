@@ -53,12 +53,12 @@ $(function() {
             box.addClass("collapsed-box");
             //Convert minus into plus
             $(this).children(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
-            bf.slideUp();
+            bf.stop(true, false).slideUp();
         } else {
             box.removeClass("collapsed-box");
             //Convert plus into minus
             $(this).children(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
-            bf.slideDown();
+            bf.stop(true, false).slideDown();
         }
     });
 
@@ -595,13 +595,13 @@ $(window).load(function() {
                 e.preventDefault();
                 if (isActive) {
                     //Slide up to close menu
-                    menu.slideUp();
+                    menu.stop(true, false).slideUp();
                     isActive = false;
                     btn.children(".fa-angle-down").first().removeClass("fa-angle-down").addClass("fa-angle-left");
                     btn.parent("li").removeClass("active");
                 } else {
                     //Slide down to open menu
-                    menu.slideDown();
+                    menu.stop(true, false).slideDown();
                     isActive = true;
                     btn.children(".fa-angle-left").first().removeClass("fa-angle-left").addClass("fa-angle-down");
                     btn.parent("li").addClass("active");

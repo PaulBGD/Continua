@@ -55,7 +55,11 @@ Configuration.prototype.loadFromFile = function (sync, data) {
     }
     var object = {};
     if (loadedData) {
-        object = JSON.parse(loadedData);
+        try {
+            object = JSON.parse(loadedData);
+        } catch(err) {
+            console.error(err.stack);
+        }
     }
     this.load(object);
     this.configuration = object;

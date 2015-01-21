@@ -7,7 +7,11 @@ Index.prototype.route = function(req, res, next) {
         // some other URL that isn't the home. some weird bug with express 3x
         return next();
     }
-    res.render('index.ejs');
+    res.render('index.ejs', {
+        page: {
+            title: "Dashboard"
+        }
+    });
 };
 
 module.exports = new Index();
