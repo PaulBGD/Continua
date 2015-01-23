@@ -1,17 +1,20 @@
-function Index() {
-    return this.route;
+var server;
+
+function Index($this) {
+    server = $this;
+    return route;
 }
 
-Index.prototype.route = function(req, res, next) {
-    if (req.url.length > 1) {
+var route = function (req, res, next) {
+    if (req.url && req.url.length > 1) {
         // some other URL that isn't the home. some weird bug with express 3x
         return next();
     }
-    res.render('index.ejs', {
-        page: {
-            title: "Dashboard"
-        }
-    });
+    var object = server.getObject(req);
+    if (req.session) {
+        object.user = req.session.user;
+    }
+    res.render('index.ejs', object);
 };
 
-module.exports = new Index();
+module.exports = Index;

@@ -21,39 +21,61 @@ app.use(express.static('./panel/static'));
 
 var pages = [{
     title: "Home",
-    url: "/",
+    url: "",
     file: "index"
+}, {
+    title: "Profile",
+    url: "/profile",
+    file: "profile"
 }];
 
 function Server() {
+    var $this = this;
     this.io = app.http().io();
 
     // start routing
-    utils.each(pages, function(index, object) {
+    utils.each(pages, function (index, object) {
         try {
             var route = require('../routes/' + object.file);
         } catch (err) {
-            console.log("Failed to load route for page '" + object.title + "'");
+            console.error("Failed to load route for page '" + object.title + "'");
             return;
         }
-        console.log("Registered " + object.title + " for url " + object.url);
-        app.use(object.url, route);
+        app.use(object.url, route($this));
     });
 }
 
-Server.prototype.start = function() {
+Server.prototype.start = function () {
     if (this.running) {
         return;
     }
     app.listen(config.listen);
     this.running = true;
+    console.debug("Listening on " + config.listen);
     return config.listen;
 };
 
-Server.prototype.stop = function() {
+Server.prototype.stop = function () {
     if (this.running) {
         app.close();
         this.running = false;
+    }
+};
+
+Server.prototype.getObject = function (req) {
+    var name = utils.each(pages, function (index, object) {
+        if (object.url === '') {
+            if (req.originalUrl === '/') {
+                return object.title;
+            }
+        } else if (req.originalUrl.indexOf(object.url) === 0) {
+            return object.title;
+        }
+    });
+    return {
+        page: {
+            title: name
+        }
     }
 };
 

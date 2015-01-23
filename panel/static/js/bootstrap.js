@@ -1421,10 +1421,10 @@ if (typeof jQuery === 'undefined') {
                 var containerDim = this.getPosition($container)
 
                 placement = placement == 'bottom' && pos.bottom + actualHeight > containerDim.bottom ? 'top'    :
-                        placement == 'top'    && pos.top    - actualHeight < containerDim.top    ? 'bottom' :
+                    placement == 'top'    && pos.top    - actualHeight < containerDim.top    ? 'bottom' :
                         placement == 'right'  && pos.right  + actualWidth  > containerDim.width  ? 'left'   :
-                        placement == 'left'   && pos.left   - actualWidth  < containerDim.left   ? 'right'  :
-                    placement
+                            placement == 'left'   && pos.left   - actualWidth  < containerDim.left   ? 'right'  :
+                                placement
 
                 $tip
                     .removeClass(orgPlacement)
@@ -1576,9 +1576,9 @@ if (typeof jQuery === 'undefined') {
 
     Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
         return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
-                placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
+            placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
                 placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-            /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
+                    /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
 
     }
 
@@ -1616,7 +1616,7 @@ if (typeof jQuery === 'undefined') {
         var o  = this.options
 
         title = $e.attr('data-original-title')
-            || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+        || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
 
         return title
     }
