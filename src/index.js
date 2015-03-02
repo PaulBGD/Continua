@@ -34,7 +34,7 @@ function formatMessage(message, object, type) {
             message += JSON.stringify(object);
         }
     }
-    return '[' + type + '][' + utils.timestamp() + '] ' + message;
+    return '[' + utils.timestamp() + '][' + type + '] ' + message;
 }
 
 var server = require("./server");

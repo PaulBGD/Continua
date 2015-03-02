@@ -27,6 +27,10 @@ var pages = [{
     title: "Profile",
     url: "/profile",
     file: "profile"
+}, {
+    title: "Log In",
+    url: "/login",
+    file: "login"
 }];
 
 function Server() {
